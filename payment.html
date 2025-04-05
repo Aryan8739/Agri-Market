@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Page</title>
+  <link rel="stylesheet" href="css/payment.css" />
+</head>
+
+<body>
+  <h1>Payment Page</h1>
+  <div class="container">
+    <div class="order-summary">
+      <h2>Order Summary</h2>
+      <p><strong>Product:</strong> <span id="productName"></span></p>
+      <p><strong>Quantity:</strong> <span id="productQuantity"></span> kg</p>
+      <p><strong>Total Price:</strong> ₹<span id="totalPrice"></span></p>
+    </div>
+
+    <div class="payment-details">
+      <h2>Buyer Details</h2>
+      <form id="paymentForm">
+        <label for="buyerName">Buyer Name:</label>
+        <input type="text" id="buyerName" required />
+
+        <label for="buyerPhone">Phone Number:</label>
+        <input type="tel" id="buyerPhone" required pattern="[0-9]{10}" placeholder="10-digit number" />
+
+        <label for="buyerEmail">Email (optional):</label>
+        <input type="email" id="buyerEmail" />
+
+        <h2>Payment Details</h2>
+        <label for="paymentMethod">Payment Method:</label>
+        <select id="paymentMethod" required>
+          <option value="">Select</option>
+          <option value="UPI">UPI</option>
+          <option value="Card">Card</option>
+          <option value="Cash on Delivery">Cash on Delivery</option>
+        </select>
+
+        <label for="deliveryAddress">Delivery Address:</label>
+        <textarea id="deliveryAddress" required></textarea>
+
+        <button type="submit">Confirm Payment</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const selectedProduct = JSON.parse(localStorage.getItem('selectedProduct'));
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+
+    if (selectedProduct) {
+      document.getElementById('productName').textContent = selectedProduct.name;
+      document.getElementById('productQuantity').textContent = selectedProduct.purchaseQuantity;
+      document.getElementById('totalPrice').textContent = selectedProduct.totalPrice;
+    }
+
+    document.getElementById('paymentForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const buyerName = document.getElementById('buyerName').value;
+      const buyerPhone = document.getElementById('buyerPhone').value;
+      const buyerEmail = document.getElementById('buyerEmail').value;
+      const paymentMethod = document.getElementById('paymentMethod').value;
+      const deliveryAddress = document.getElementById('deliveryAddress').value;
+
+      if (!buyerName || !buyerPhone || !paymentMethod || !deliveryAddress) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+
+      const orderId = 'ORD' + Date.now();
+
+      const order = {
+        id: orderId,
+        product: selectedProduct.name,
+        quantity: selectedProduct.purchaseQuantity,
+        totalPrice: selectedProduct.totalPrice,
+        paymentMethod,
+        deliveryAddress,
+        buyerName,
+        buyerPhone,
+        buyerEmail,
+        date: new Date().toLocaleString()
+      };
+
+      // Save order
+      const orders = JSON.parse(localStorage.getItem('orders')) || [];
+      orders.push(order);
+      localStorage.setItem('orders', JSON.stringify(orders));
+
+      // Update product quantity
+      const updatedProducts = products.map(product => {
+        if (product.id === selectedProduct.id) {
+          return {
+            ...product,
+            quantity: product.quantity - selectedProduct.purchaseQuantity
+          };
+        }
+        return product;
+      });
+      localStorage.setItem('products', JSON.stringify(updatedProducts));
+
+      // Confirmation
+      alert('Order placed successfully!');
+
+      // Redirect to My Orders page
+      window.location.href = 'my-orders.html';
+    });
+  </script>
+</body>
+
+</html>

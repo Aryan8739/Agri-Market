@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buyer - Available Products</title>
+  <link rel="stylesheet" href="css/buyer.css" />
+</head>
+<body>
+  <h1>Buyer - Available Products</h1>
+  <div class="grid" id="productList"></div>
+
+  <script>
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+
+    function displayProducts() {
+      const productList = document.getElementById('productList');
+      productList.innerHTML = '';
+
+      if (products.length === 0) {
+        productList.innerHTML = '<p>No products available.</p>';
+        return;
+      }
+
+      products.forEach(product => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `
+          <h3>${product.name}</h3>
+          <p>${product.description}</p>
+          <p>Price: ₹${product.price}/kg</p>
+          <p>Quantity Available: ${product.quantity} kg</p>
+          <input type="number" min="1" max="${product.quantity}" placeholder="Enter quantity (kg)" id="quantity-${product.id}" />
+          <button onclick='orderProduct(${product.id})'>Order Now</button>
+        `;
+        productList.appendChild(div);
+      });
+    }
+
+    function orderProduct(productId) {
+      const selectedProduct = products.find(p => p.id === productId);
+      const quantityInput = document.getElementById(`quantity-${productId}`);
+      const quantity = parseInt(quantityInput.value);
+
+      if (!quantity || isNaN(quantity) || quantity <= 0) {
+        alert('Please enter a valid quantity.');
+        return;
+      }
+
+      if (quantity > selectedProduct.quantity) {
+        alert('Requested quantity exceeds available stock.');
+        return;
+      }
+
+      selectedProduct.purchaseQuantity = quantity;
+      selectedProduct.totalPrice = quantity * selectedProduct.price;
+      localStorage.setItem('selectedProduct', JSON.stringify(selectedProduct));
+      window.location.href = 'payment.html';
+    }
+
+    displayProducts();
+  </script>
+</body>
+</html>

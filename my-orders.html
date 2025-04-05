@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Orders</title>
+  <link rel="stylesheet" href="css/my-orders.css" />
+
+</head>
+
+<body>
+  <h1>My Orders</h1>
+  <div class="order-list" id="orderList">
+    <!-- Orders will be displayed here -->
+  </div>
+
+  <script>
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+
+    const orderList = document.getElementById('orderList');
+
+    if (orders.length === 0) {
+      orderList.innerHTML = '<p>No orders found.</p>';
+    } else {
+      orders.forEach(order => {
+        const orderItem = document.createElement('div');
+        orderItem.classList.add('order-item');
+
+        orderItem.innerHTML = `
+          <p><strong>Order ID:</strong> ${order.id}</p>
+          <p><strong>Product:</strong> ${order.product}</p>
+          <p><strong>Quantity:</strong> ${order.quantity} kg</p>
+          <p><strong>Total Price:</strong> ₹${order.totalPrice}</p>
+          <p><strong>Payment Method:</strong> ${order.paymentMethod}</p>
+          <p><strong>Delivery Address:</strong> ${order.deliveryAddress}</p>
+          <p><strong>Buyer Name:</strong> ${order.buyerName}</p>
+          <p><strong>Buyer Phone:</strong> ${order.buyerPhone}</p>
+          ${order.buyerEmail ? `<p><strong>Buyer Email:</strong> ${order.buyerEmail}</p>` : ''}
+          <p><strong>Order Date:</strong> ${order.date}</p>
+          <hr />
+        `;
+
+        orderList.appendChild(orderItem);
+      });
+    }
+  </script>
+</body>
+
+</html>

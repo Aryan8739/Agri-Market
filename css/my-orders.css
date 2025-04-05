@@ -1,0 +1,142 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f8fb;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: #2b6777;
+    margin-bottom: 40px;
+}
+
+.orders-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.order-card {
+    background: white;
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    width: 320px;
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+    animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.order-card h3 {
+    color: #52ab98;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.order-detail {
+    margin-bottom: 10px;
+    padding: 8px;
+    background: #f9fbfc;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.order-detail i {
+    margin-right: 8px;
+    color: #2b6777;
+    width: 20px;
+    text-align: center;
+}
+
+.order-detail strong {
+    color: #2b6777;
+    display: inline-block;
+    width: 140px;
+}
+
+.download-receipt {
+    margin-top: 10px;
+    background-color: #2b6777;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.download-receipt:hover {
+    background-color: #52ab98;
+}
+
+.back-button {
+    display: inline-block;
+    margin: 30px auto 0;
+    background-color: #2b6777;
+    color: white;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.back-button:hover {
+    background-color: #52ab98;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .order-card {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .back-button {
+        width: 100%;
+        padding: 12px 0;
+    }
+}
